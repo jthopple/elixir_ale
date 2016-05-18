@@ -42,7 +42,7 @@
 #endif
 
 // Max SPI transfer size that we support
-#define SPI_TRANSFER_MAX 256
+#define SPI_TRANSFER_MAX 1024
 
 struct spi_info
 {
@@ -107,8 +107,8 @@ static int spi_transfer(struct spi_info *spi, const char *tx, char *rx, unsigned
 {
     struct spi_ioc_transfer tfer = spi->transfer;
 
-    tfer.tx_buf = (__u64) tx;
-    tfer.rx_buf = (__u64) rx;
+    tfer.tx_buf = (unsigned long) tx;
+    tfer.rx_buf = (unsigned long) rx;
     tfer.len = len;
 
     if (ioctl(spi->fd, SPI_IOC_MESSAGE(1), &tfer) < 1)
